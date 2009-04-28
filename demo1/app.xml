@@ -1,7 +1,7 @@
 <application xmlns="http://ns.adobe.com/air/application/1.5">
-	<id>com.miketigas.AirTest2</id>
+	<id>com.miketigas.demo1</id>
 	<version>0.1</version>
-    <filename>AirTest2</filename>
+    <filename>AIRDemo1</filename>
     <initialWindow>
 		<!--<systemChrome>none</systemChrome>-->
 		<!--<visible>true</visible>-->
