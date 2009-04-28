@@ -1,0 +1,16 @@
+<application xmlns="http://ns.adobe.com/air/application/1.5">
+	<id>com.miketigas.AirTest2</id>
+	<version>0.1</version>
+    <filename>AirTest2</filename>
+    <initialWindow>
+		<!--<systemChrome>none</systemChrome>-->
+		<!--<visible>true</visible>-->
+		<transparent>false</transparent>	
+        <content>main.html</content>
+		<type>utility</type>
+        <visible>true</visible>
+        <width>800</width>
+        <height>600</height>
+    </initialWindow>
+</application>
+
