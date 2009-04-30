@@ -29,12 +29,6 @@
 					var tray_menu = new air.NativeMenu();
 					air.NativeApplication.nativeApplication.icon.menu = tray_menu;
 
-					// Add "Exit" command to the tray menu
-					var exitCommand = tray_menu.addItem(new air.NativeMenuItem("Exit")); 
-					exitCommand.addEventListener(air.Event.SELECT,function(event){ 
-							air.NativeApplication.nativeApplication.icon.bitmaps = []; 
-							air.NativeApplication.nativeApplication.exit(); 
-					}); 
 				}
 				if (supports_tray){
 					// Load the 16x16 icon
@@ -42,6 +36,13 @@
 
 					// Make the program not exit on window close (only minimize to tray)
 					air.NativeApplication.nativeApplication.autoExit = false; 
+
+					// Add "Exit" command to the tray menu
+					var exitCommand = tray_menu.addItem(new air.NativeMenuItem("Exit")); 
+					exitCommand.addEventListener(air.Event.SELECT,function(event){ 
+							air.NativeApplication.nativeApplication.icon.bitmaps = []; 
+							air.NativeApplication.nativeApplication.exit(); 
+					}); 
 
 					// Add the tray tooltip text.
 					air.NativeApplication.nativeApplication.icon.tooltip = "AIR application"; 
