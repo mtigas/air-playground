@@ -61,7 +61,7 @@ App.UI.initTray = function() {
 		iconLoad.load(new air.URLRequest("lib/img/icon16.png")); 
 
 		// Make the program not exit on window close (only minimize to tray)
-		air.NativeApplication.nativeApplication.autoExit = false; 
+		//air.NativeApplication.nativeApplication.autoExit = false; 
 
 		// Add "Exit" command to the tray menu
 		var exitCommand = tray_menu.addItem(new air.NativeMenuItem("Exit")); 
@@ -91,22 +91,12 @@ App.Data.init = function() {
 	var dbFile = air.File.applicationStorageDirectory.resolvePath(App.Name()+".db");
 	air.trace(dbFile.nativePath);
 
-
 	if (dbFile.exists) {
-		App.Data.openDB(dbFile);
+		App.Data.conn.openAsync(dbFile, air.SQLMode.UPDATE, null, false, 1024, App.Data.getOrCreateKey());
 	}
 	else {
-		App.Data.openOrCreateDB(dbFile);
+		App.Data.conn.openAsync(dbFile, air.SQLMode.CREATE, null, false, 1024, App.Data.getOrCreateKey());
 	}
-}
-App.Data.openDB = function(dbFile) {
-	air.trace("Database opened");
-	App.Data.conn.openAsync(dbFile, air.SQLMode.UPDATE, null, false, 1024, App.Data.getOrCreateKey());
-}
-App.Data.openOrCreateDB = function(dbFile) {
-	air.trace("Database created");
-	App.Data.conn.openAsync(dbFile, air.SQLMode.CREATE, null, false, 1024, App.Data.getOrCreateKey());
-	// init tables here
 }
 
 App.Data.getOrCreateKey = function() {
@@ -116,8 +106,8 @@ App.Data.getOrCreateKey = function() {
 	try {
 		var raw_bytes = air.EncryptedLocalStore.getItem("encKey");
 		if ((raw_bytes != null)&&(raw_bytes.length==16)) {
-			air.trace("Got enc key:");
-			air.trace("\t"+raw_bytes);
+			air.trace("Got enc key");
+			//air.trace("\t"+raw_bytes);
 			encryptionKey = raw_bytes;
 		}
 	} catch (err) { }
@@ -131,20 +121,27 @@ App.Data.getOrCreateKey = function() {
 		for (i=0;i<raw_integers.length;i++) {
 			raw_bytes.writeByte(raw_integers[i]);
 		}
-		air.trace("Created enc key:");
-		air.trace("\t"+raw_bytes);
+		air.trace("Created enc key");
+		//air.trace("\t"+raw_bytes);
 
 		air.EncryptedLocalStore.setItem('encKey', raw_bytes);
 		encryptionKey = raw_bytes;
 	}
 	return encryptionKey;
 }
-App.Data.openHandler = function(event) { 
-    air.trace("App.Data:\tDatabase access successful."); 
-} 
-App.Data.errorHandler = function(event) { 
-    air.trace("App.Data:\tError:", event.error.message); 
-    air.trace("App.Data:\t\tDetails:", event.error.details); 
+App.Data.openHandler = function(event) {
+    air.trace("App.Data:\tDatabase access successful.");
+}
+App.Data.errorHandler = function(event) {
+	air.trace("App.Data:\tDatabase access FAILED.");
+	if (event.errorID == 3138) {
+		air.trace("\t\t\tThe encryption key for the database is wrong.");
+		// prompt for reset, delete DB, start over
+	}
+	else {
+		air.trace("\t\t\t"+event.error.message);
+		air.trace("\t\t\tDetails: "+event.error.details);
+	}
 }
 
 /******************** Data storage: manipulation ********************/
@@ -194,5 +191,3 @@ App.setUserAgent = App.Data.PRNGDecorate(App.setUserAgent);
 App.getUserAgent = App.Data.PRNGDecorate(App.getUserAgent);
 App.UI.initTray = App.Data.PRNGDecorate(App.UI.initTray);
 App.Data.initDataTables = App.Data.PRNGDecorate(App.Data.initDataTables);
-App.Data.openHandler = App.Data.PRNGDecorate(App.Data.openHandler);
-App.Data.errorHandler = App.Data.PRNGDecorate(App.Data.errorHandler);
