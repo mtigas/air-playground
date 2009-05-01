@@ -41,6 +41,18 @@ App.UI.init = function() {
 	App.UI.initTray();
 }
 
+App.UI.isDocked = function() {
+	return !window.nativeWindow.visible;
+}
+App.UI.dock = function() {
+	window.nativeWindow.visible = false;
+}
+
+App.UI.undock = function() {
+	window.nativeWindow.visible = true;
+	window.nativeWindow.orderToFront();
+ }
+
 App.UI.initTray = function() {
 	var supports_tray = air.NativeApplication.supportsSystemTrayIcon;
 	var supports_dock = air.NativeApplication.supportsDockIcon;
@@ -62,6 +74,22 @@ App.UI.initTray = function() {
 
 		// Make the program not exit on window close (only minimize to tray)
 		//air.NativeApplication.nativeApplication.autoExit = false; 
+
+		// Hide taskbar thingy on minimize (minimizes to tray)
+		air.NativeApplication.nativeApplication.icon.addEventListener('click', function(event){
+			if (App.UI.isDocked()) {
+				App.UI.undock();
+			}
+			else {
+				App.UI.dock();
+			}
+		});
+		window.nativeWindow.addEventListener(air.NativeWindowDisplayStateEvent.DISPLAY_STATE_CHANGING, function(evt) {
+			if( evt.afterDisplayState == air.NativeWindowDisplayState.MINIMIZED ){
+				evt.preventDefault();
+				App.UI.dock();
+			}
+		});
 
 		// Add "Exit" command to the tray menu
 		var exitCommand = tray_menu.addItem(new air.NativeMenuItem("Exit")); 
