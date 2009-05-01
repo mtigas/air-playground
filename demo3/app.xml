@@ -1,10 +1,12 @@
 <application xmlns="http://ns.adobe.com/air/application/1.5">
 	<id>com.miketigas.demo3</id>
 	<version>0.1</version>
+    <name>AIRDemo3</name>
     <filename>AIRDemo3</filename>
+	<description>Demo of a simple AIR framework.</description>
+	<copyright>Copyright 2009 Mike Tigas</copyright>
     <initialWindow>
-		<!--<systemChrome>none</systemChrome>-->
-		<!--<visible>true</visible>-->
+		<systemChrome>standard</systemChrome>
 		<transparent>false</transparent>	
         <content>main.html</content>
 		<type>utility</type>
@@ -12,5 +14,14 @@
         <width>800</width>
         <height>600</height>
     </initialWindow>
+	<programMenuFolder>AirDemo3</programMenuFolder>
+	<icon>  
+		<image16x16>lib/img/icon16.png</image16x16>
+		<image32x32>lib/img/icon32.png</image32x32>
+		<image48x48>lib/img/icon48.png</image48x48>
+		<image128x128>lib/img/icon128.png</image128x128>
+	</icon>
+	<customUpdateUI>false</customUpdateUI>
+	<allowBrowserInvocation>false</allowBrowserInvocation>
 </application>
 

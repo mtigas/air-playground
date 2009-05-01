@@ -38,7 +38,9 @@ App.setUserAgent = function(uastring) {
 if (!App.UI) App.UI = {};
 
 App.UI.init = function() {
+	App.UI.initIcons();
 	App.UI.initTray();
+	App.UI.initMenu();
 }
 
 App.UI.isDocked = function() {
@@ -52,26 +54,44 @@ App.UI.undock = function() {
 	window.nativeWindow.visible = true;
 	window.nativeWindow.orderToFront();
  }
+App.UI.iconArr = new Array();
+App.UI.initIcons = function() {
+	air.NativeApplication.nativeApplication.icon.bitmaps = new Array();
+	var iconLoad1 = new air.Loader();
+	var iconLoad2 = new air.Loader();
+	var iconLoad3 = new air.Loader();
+	var iconLoad4 = new air.Loader();
+	iconLoad1.contentLoaderInfo.addEventListener(air.Event.COMPLETE,function(event){
+		App.UI.iconArr.push(event.target.content.bitmapData);
+		air.NativeApplication.nativeApplication.icon.bitmaps = App.UI.iconArr;
+	}); 
+	iconLoad2.contentLoaderInfo.addEventListener(air.Event.COMPLETE,function(event){
+		App.UI.iconArr.push(event.target.content.bitmapData);
+		air.NativeApplication.nativeApplication.icon.bitmaps = App.UI.iconArr;
+	}); 
+	iconLoad3.contentLoaderInfo.addEventListener(air.Event.COMPLETE,function(event){
+		App.UI.iconArr.push(event.target.content.bitmapData);
+		air.NativeApplication.nativeApplication.icon.bitmaps = App.UI.iconArr;
+	}); 
+	iconLoad4.contentLoaderInfo.addEventListener(air.Event.COMPLETE,function(event){
+		App.UI.iconArr.push(event.target.content.bitmapData);
+		air.NativeApplication.nativeApplication.icon.bitmaps = App.UI.iconArr;
+	}); 
+	iconLoad1.load(new air.URLRequest("lib/img/icon16.png")); 
+	iconLoad2.load(new air.URLRequest("lib/img/icon32.png")); 
+	iconLoad3.load(new air.URLRequest("lib/img/icon48.png")); 
+	iconLoad4.load(new air.URLRequest("lib/img/icon128.png"));
+}
 
 App.UI.initTray = function() {
 	var supports_tray = air.NativeApplication.supportsSystemTrayIcon;
 	var supports_dock = air.NativeApplication.supportsDockIcon;
 	if (supports_tray || supports_dock)	{
-		// Initialize the icon for the tray icon
-		var iconLoad = new air.Loader();
-		iconLoad.contentLoaderInfo.addEventListener(air.Event.COMPLETE,function(event){
-			air.NativeApplication.nativeApplication.icon.bitmaps = [event.target.content.bitmapData];
-		}); 
-
 		// Add the menu to the tray
 		var tray_menu = new air.NativeMenu();
 		air.NativeApplication.nativeApplication.icon.menu = tray_menu;
-
 	}
 	if (supports_tray){
-		// Load the 16x16 icon
-		iconLoad.load(new air.URLRequest("lib/img/icon16.png")); 
-
 		// Make the program not exit on window close (only minimize to tray)
 		//air.NativeApplication.nativeApplication.autoExit = false; 
 
@@ -102,11 +122,14 @@ App.UI.initTray = function() {
 		air.NativeApplication.nativeApplication.icon.tooltip = "AIR application"; 
 	}
 	if (supports_dock) {
-		// Load the 128x128 icon
-		iconLoad.load(new air.URLRequest("lib/img/icon128.png"));
+		//foo
 	}
 }
 
+App.UI.initMenu = function() {
+	var windowMenu = air.ui.Menu.createFromXML("lib/xml/mainmenu.xml");
+	air.ui.Menu.setAsMenu(windowMenu);
+}
 
 /******************** Data storage: preliminaries ********************/
 if (!App.Data) App.Data = {};
