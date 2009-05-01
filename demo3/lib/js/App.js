@@ -173,6 +173,20 @@ App.Data.errorHandler = function(event) {
 }
 
 /******************** Data storage: manipulation ********************/
+App.Data.executeSQL = function(sql,callback) {
+	var createStmt = new air.SQLStatement();
+	createStmt.sqlConnection = App.Data.conn;
+
+	createStmt.text = sql;
+	createStmt.addEventListener(air.SQLEvent.RESULT, callback);
+	createStmt.addEventListener(air.SQLErrorEvent.ERROR, function(event){
+		air.trace("App.Data.executeSQL:\tFAILED.");
+		air.trace("\t\t\t"+event.error.message);
+		air.trace("\t\t\tDetails: "+event.error.details);		
+	});
+	createStmt.execute();
+}
+
 App.Data.saveString = function(key, value) {
 	if ((typeof(key) != "string")||(typeof(value) != "string")){
 		return false;
