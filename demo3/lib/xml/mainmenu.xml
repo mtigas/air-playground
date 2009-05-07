@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="utf-8" ?> 
 <root> 
-    <menuitem label="MenuItem A"/> 
+    <menuitem label="File" keyEquivalent="f" ctrlKey="false" altKey="true"> 
+        <menuitem label="New" keyEquivalent="n"/> 
+        <menuitem label="Open" keyEquivalent="o"/> 
+        <menuitem label="Save" keyEquivalent="s"/> 
+        <menuitem label="Save As..." keyEquivalent="s" shiftKey="true"/> 
+        <menuitem label="Close" keyEquivalent="w"/> 
+	</menuitem>
     <menuitem label="MenuItem B" type="check" toggled="true"/> 
     <menuitem label="MenuItem C" enabled="false"/> 
-    <menuitem type="separator"/> 
     <menuitem label="MenuItem D"> 
         <menuitem label="SubMenuItem D-1"/> 
         <menuitem label="SubMenuItem D-2"/> 
