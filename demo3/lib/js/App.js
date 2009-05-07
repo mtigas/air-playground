@@ -236,6 +236,11 @@ App.Data.getString = function(key) {
 		return "";
 	}
 }
+App.Data.makeHash = function(string) {
+	var shaObj = new jsSHA(string);
+	return shaObj.getHash("SHA-512", "HEX");
+}
+
 /******************** Data storage: update the PRNG seed every so often ********************/
 App.Data.PRNGDecorate = function(fn) {
 	if (typeof(fn) == "function") {
